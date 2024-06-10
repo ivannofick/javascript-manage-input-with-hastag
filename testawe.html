@@ -39,16 +39,20 @@
           var inputValue = idInput.value;
           if (inputValue.charAt(cursorPosition - 1) === "#") {
             positionCursor = cursorPosition;
-            console.log("inputValue.charAt(cursorPosition - 1)")
+            console.log("inputValue.charAt(cursorPosition - 1)");
             makeListInput();
           } else {
-            idInput.addEventListener("keypress", function (event) {
-              if (event.key === "#") {
-                positionCursor = cursorPosition;
-                console.log("idInput.addEventListener")
-                makeListInput();
-              }
-            }, false);
+            idInput.addEventListener(
+              "keypress",
+              function (event) {
+                if (event.key === "#") {
+                  positionCursor = cursorPosition;
+                  console.log("idInput.addEventListener");
+                  makeListInput();
+                }
+              },
+              false
+            );
           }
         }
       }
@@ -61,19 +65,31 @@
         });
       }
       function selectedList(event) {
-        var inputValue = idInput.value;
+        var inputValue = idInput.value+" ";
+
+        console.log(inputValue)
         if (inputValue.endsWith("#")) {
-          var textBefore = inputValue.substring(0, positionCursor+1);
+          var textBefore = inputValue.substring(0, positionCursor + 1);
           var newText = textBefore + event.getAttribute("data-valData") + " ";
           idInput.value = newText;
         } else {
           var textBefore = inputValue.substring(0, positionCursor);
           var textBetween = inputValue.substring(0, positionCursor + 1);
           var textAfter = inputValue.substring(positionCursor);
-          let posTextAfter = textAfter.indexOf(' ');
+          let posTextAfter = textAfter.indexOf(" ");
           let removedAfterString = textAfter.substring(posTextAfter);
-          var newText = textBefore + event.getAttribute("data-valData")+"#"+ removedAfterString;
+          var newText = textBefore + event.getAttribute("data-valData") + removedAfterString;
+          if (textBetween.charAt(positionCursor - 1) !== "#") {
+            newText =  textBetween+ event.getAttribute("data-valData") + removedAfterString;
+          }
           idInput.value = newText;
+          console.log({
+            textBefore,
+            textBetween,
+            textAfter,
+            posTextAfter,
+            removedAfterString,
+          });
         }
         dropdownList.style.display = "none";
       }
