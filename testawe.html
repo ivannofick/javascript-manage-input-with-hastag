@@ -72,7 +72,7 @@
           var textAfter = inputValue.substring(positionCursor);
           let posTextAfter = textAfter.indexOf(' ');
           let removedAfterString = textAfter.substring(posTextAfter);
-          var newText = textBefore + event.getAttribute("data-valData") + removedAfterString;
+          var newText = textBefore + event.getAttribute("data-valData")+"#"+ removedAfterString;
           idInput.value = newText;
         }
         dropdownList.style.display = "none";
