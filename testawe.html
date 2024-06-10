@@ -3,13 +3,17 @@
     Halo
   </head>
   <body>
-    <input
-      id="changed"
-      onkeydown="changedString(this)"
-      style="height: 12rem; width: 39rem"
-    />
+    <div style="height: 12rem; width: 39rem">
+      <input id="changed" onkeydown="changedString(this)" style="height: 12rem; width: 39rem"/>
+      <ul style="height: 12rem; width: 39rem; margin: 0px; padding: 0; display: none;" id="dropdown-list">
+      </ul>
+    </div>
 
     <script>
+        var dropdownList = document.getElementById("dropdown-list");
+        var idInput = document.getElementById("changed");
+        var positionCursor=0;
+
       /**
        * cursor position https://stackoverflow.com/questions/54381318/get-index-of-marked-text-in-edittext-android-studio-kotlin
        * get char https://stackoverflow.com/questions/50297288/how-can-i-access-a-char-in-string-in-at-specific-number
@@ -17,7 +21,6 @@
        *
        * */
       function changedString(event) {
-        var idInput = document.getElementById("changed");
         var valuesData = event.value;
         if (valuesData !== "") {
           if (valuesData.endsWith("#")) {
@@ -27,22 +30,33 @@
             var cursorPosition = idInput.selectionStart;
             var inputValue = idInput.value;
             if (inputValue.charAt(cursorPosition - 1) === "#") {
-              var textBefore = inputValue.substring(0, cursorPosition);
-              var textAfter = inputValue.substring(cursorPosition);
+              positionCursor = cursorPosition;
+              makeListInput()
               idInput.addEventListener("keydown", function (event) {
                 if (event.key === "#") {
-                  console.log("event.key", event.key)
-                  var newText = textBefore + "trondol " +textAfter;
-                  idInput.value = newText;
-                  console.log(newText);
-                  console.log("key", event.key);
-                  console.log("textBefore", textBefore);
-                  console.log("textAfter", textAfter);
+                  positionCursor = cursorPosition;
+                  makeListInput()
                 }
               });
             }
           }
         }
+      }
+      function makeListInput() {
+        dropdownList.style.display = "block";
+        var arrayList = ["trondol", "balap", "liar", "motor"]
+        arrayList.forEach((valArr, index) => {
+          dropdownList.innerHTML += `<li onclick='selectedList(this)' data-valData='${valArr}'>${valArr}</li>`
+        });
+      }
+      function selectedList(event) {
+        var inputValue = idInput.value
+        var textBefore = inputValue.substring(0, positionCursor);
+        var textBetween = inputValue.substring(0, positionCursor+1);
+        var textAfter = inputValue.substring(positionCursor);
+        var newText = textBefore+event.getAttribute("data-valData")+" "+textAfter
+        idInput.value = newText
+        console.log({textBefore, textBetween, textAfter})
       }
     </script>
   </body>
