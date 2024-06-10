@@ -39,7 +39,6 @@
           var inputValue = idInput.value;
           if (inputValue.charAt(cursorPosition - 1) === "#") {
             positionCursor = cursorPosition;
-            console.log("inputValue.charAt(cursorPosition - 1)");
             makeListInput();
           } else {
             idInput.addEventListener(
@@ -47,7 +46,6 @@
               function (event) {
                 if (event.key === "#") {
                   positionCursor = cursorPosition;
-                  console.log("idInput.addEventListener");
                   makeListInput();
                 }
               },
@@ -81,13 +79,6 @@
             newText =  textBetween+ event.getAttribute("data-valData") + removedAfterString;
           }
           idInput.value = newText.replace(/\s+$/, '')+" ";
-          console.log({
-            textBefore,
-            textBetween,
-            textAfter,
-            posTextAfter,
-            removedAfterString,
-          });
         }
         dropdownList.style.display = "none";
         idInput.focus()
