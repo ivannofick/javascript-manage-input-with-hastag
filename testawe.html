@@ -4,15 +4,28 @@
   </head>
   <body>
     <div style="height: 12rem; width: 39rem">
-      <input id="changed" onkeydown="changedString(this)" style="height: 12rem; width: 39rem"/>
-      <ul style="height: 12rem; width: 39rem; margin: 0px; padding: 0; display: none;" id="dropdown-list">
-      </ul>
+      <input
+        id="changed"
+        onkeydown="changedString(this)"
+        style="height: 12rem; width: 39rem"
+      />
+      <ul
+        style="
+          height: 12rem;
+          width: 39rem;
+          margin: 0px;
+          padding: 0;
+          display: none;
+        "
+        id="dropdown-list"
+      ></ul>
     </div>
 
     <script>
-        var dropdownList = document.getElementById("dropdown-list");
-        var idInput = document.getElementById("changed");
-        var positionCursor=0;
+      var dropdownList = document.getElementById("dropdown-list");
+      var idInput = document.getElementById("changed");
+      var positionCursor = 0;
+      var downPress = false;
 
       /**
        * cursor position https://stackoverflow.com/questions/54381318/get-index-of-marked-text-in-edittext-android-studio-kotlin
@@ -23,40 +36,58 @@
       function changedString(event) {
         var valuesData = event.value;
         if (valuesData !== "") {
-          if (valuesData.endsWith("#")) {
-            idInput.value = idInput.value + "saya ";
-            return false;
+          var cursorPosition = idInput.selectionStart;
+          var inputValue = idInput.value;
+          if (inputValue.charAt(cursorPosition - 1) === "#") {
+            positionCursor = cursorPosition;
+            console.log("inputValue.charAt(cursorPosition - 1)")
+            makeListInput();
           } else {
-            var cursorPosition = idInput.selectionStart;
-            var inputValue = idInput.value;
-            if (inputValue.charAt(cursorPosition - 1) === "#") {
-              positionCursor = cursorPosition;
-              makeListInput()
-              idInput.addEventListener("keydown", function (event) {
-                if (event.key === "#") {
-                  positionCursor = cursorPosition;
-                  makeListInput()
-                }
-              });
-            }
+            idInput.addEventListener("keypress", function (event) {
+              // if (downPress) return false;
+              // downPress = true;
+              if (event.key === "#") {
+                positionCursor = cursorPosition;
+                console.log("idInput.addEventListener")
+                makeListInput();
+              }
+            }, false);
+            // idInput.addEventListener('keyup', function () {
+            //   downPress = false;
+            // }, false);
           }
+          // if (valuesData.endsWith("#")) {
+          //   idInput.value = idInput.value + "saya ";
+          //   return false;
+          // } else {
+          // }
         }
       }
       function makeListInput() {
         dropdownList.style.display = "block";
-        var arrayList = ["trondol", "balap", "liar", "motor"]
+        var arrayList = ["trondol", "balap", "liar", "motor"];
+        dropdownList.innerHTML = "";
         arrayList.forEach((valArr, index) => {
-          dropdownList.innerHTML += `<li onclick='selectedList(this)' data-valData='${valArr}'>${valArr}</li>`
+          dropdownList.innerHTML += `<li onclick='selectedList(this)' data-valData='${valArr}'>${valArr}</li>`;
         });
       }
       function selectedList(event) {
-        var inputValue = idInput.value
-        var textBefore = inputValue.substring(0, positionCursor);
-        var textBetween = inputValue.substring(0, positionCursor+1);
-        var textAfter = inputValue.substring(positionCursor);
-        var newText = textBefore+event.getAttribute("data-valData")+" "+textAfter
-        idInput.value = newText
-        console.log({textBefore, textBetween, textAfter})
+        var inputValue = idInput.value;
+        if (inputValue.endsWith("#")) {
+          var textBefore = inputValue.substring(0, positionCursor);
+          var textBetween = inputValue.substring(0, positionCursor + 1);
+          var newText = textBetween + event.getAttribute("data-valData") + " ";
+          idInput.value = newText;
+          console.log({ textBefore, textBetween });
+        } else {
+          var textBefore = inputValue.substring(0, positionCursor);
+          var textBetween = inputValue.substring(0, positionCursor + 1);
+          var textAfter = inputValue.substring(positionCursor);
+          var newText = textBefore + event.getAttribute("data-valData") + " " + textAfter;
+          idInput.value = newText;
+          console.log({ textBefore, textBetween, textAfter });
+        }
+        dropdownList.style.display = "none";
       }
     </script>
   </body>
