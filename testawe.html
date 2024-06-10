@@ -69,7 +69,7 @@
         if (inputValue.endsWith("#")) {
           var textBefore = inputValue.substring(0, positionCursor + 1);
           var newText = textBefore + event.getAttribute("data-valData") + " ";
-          idInput.value = newText.replace(/\s+$/, '');
+          idInput.value = newText.replace(/\s+$/, '')+" ";
         } else {
           var textBefore = inputValue.substring(0, positionCursor);
           var textBetween = inputValue.substring(0, positionCursor + 1);
@@ -80,7 +80,7 @@
           if (textBetween.charAt(positionCursor - 1) !== "#") {
             newText =  textBetween+ event.getAttribute("data-valData") + removedAfterString;
           }
-          idInput.value = newText.replace(/\s+$/, '');
+          idInput.value = newText.replace(/\s+$/, '')+" ";
           console.log({
             textBefore,
             textBetween,
