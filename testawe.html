@@ -25,7 +25,6 @@
       var dropdownList = document.getElementById("dropdown-list");
       var idInput = document.getElementById("changed");
       var positionCursor = 0;
-      var downPress = false;
 
       /**
        * cursor position https://stackoverflow.com/questions/54381318/get-index-of-marked-text-in-edittext-android-studio-kotlin
@@ -44,23 +43,13 @@
             makeListInput();
           } else {
             idInput.addEventListener("keypress", function (event) {
-              // if (downPress) return false;
-              // downPress = true;
               if (event.key === "#") {
                 positionCursor = cursorPosition;
                 console.log("idInput.addEventListener")
                 makeListInput();
               }
             }, false);
-            // idInput.addEventListener('keyup', function () {
-            //   downPress = false;
-            // }, false);
           }
-          // if (valuesData.endsWith("#")) {
-          //   idInput.value = idInput.value + "saya ";
-          //   return false;
-          // } else {
-          // }
         }
       }
       function makeListInput() {
@@ -74,11 +63,10 @@
       function selectedList(event) {
         var inputValue = idInput.value;
         if (inputValue.endsWith("#")) {
-          var textBefore = inputValue.substring(0, positionCursor);
-          var textBetween = inputValue.substring(0, positionCursor + 1);
-          var newText = textBetween + event.getAttribute("data-valData") + " ";
+          var textBefore = inputValue.substring(0, positionCursor+1);
+          var newText = textBefore + event.getAttribute("data-valData") + " ";
           idInput.value = newText;
-          console.log({ textBefore, textBetween });
+          console.log({ textBefore });
         } else {
           var textBefore = inputValue.substring(0, positionCursor);
           var textBetween = inputValue.substring(0, positionCursor + 1);
