@@ -1,0 +1,45 @@
+<html>
+  <head>
+    Halo
+  </head>
+  <body>
+    <input id="changed" onkeydown="changedString(this)"  style="height: 12rem; width: 39rem;"/>
+
+    <script>
+        /**
+         * cursor position https://stackoverflow.com/questions/54381318/get-index-of-marked-text-in-edittext-android-studio-kotlin
+         * get char https://stackoverflow.com/questions/50297288/how-can-i-access-a-char-in-string-in-at-specific-number
+         * 
+         * 
+         * */
+      function changedString(event) {
+        var idInput = document.getElementById("changed");
+        var valuesData = event.value;
+        if (valuesData !== "") {
+          if (valuesData.endsWith("#")) {
+            idInput.value = idInput.value + "saya";
+          }
+        }
+        var cursorPosition = idInput.selectionStart;
+        var inputValue = idInput.value;
+        // if (event.key === "#" && inputValue.charAt(cursorPosition - 1) === "#") {
+            if (inputValue.charAt(cursorPosition - 1) === "#") {
+            console.log("inputValue",inputValue.charAt(cursorPosition - 1))
+          var textBefore = inputValue.substring(0, cursorPosition - 1);
+          console.log("textBefore", textBefore)
+          var textAfter = inputValue.substring(cursorPosition);
+          var newText = textBefore.substring(0, textBefore.lastIndexOf("#")) +  " aia " + textAfter.substring(textAfter.indexOf("#") + 1);
+
+          idInput.value = newText;
+
+          idInput.setSelectionRange(
+            cursorPosition + 2,
+            cursorPosition + 2
+          );
+
+        //   event.preventDefault();
+        }
+      }
+    </script>
+  </body>
+</html>
