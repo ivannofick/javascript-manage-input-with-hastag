@@ -29,11 +29,11 @@
             if (inputValue.charAt(cursorPosition - 1) === "#") {
               var textBefore = inputValue.substring(0, cursorPosition);
               var textAfter = inputValue.substring(cursorPosition);
-              var newText = textBefore + "trondol " +textAfter;
               idInput.addEventListener("keydown", function (event) {
                 if (event.key === "#") {
                   console.log("event.key", event.key)
-                  // idInput.value = newText
+                  var newText = textBefore + "trondol " +textAfter;
+                  idInput.value = newText;
                   console.log(newText);
                   console.log("key", event.key);
                   console.log("textBefore", textBefore);
