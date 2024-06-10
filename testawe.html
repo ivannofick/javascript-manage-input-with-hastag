@@ -66,14 +66,14 @@
           var textBefore = inputValue.substring(0, positionCursor+1);
           var newText = textBefore + event.getAttribute("data-valData") + " ";
           idInput.value = newText;
-          console.log({ textBefore });
         } else {
           var textBefore = inputValue.substring(0, positionCursor);
           var textBetween = inputValue.substring(0, positionCursor + 1);
           var textAfter = inputValue.substring(positionCursor);
-          var newText = textBefore + event.getAttribute("data-valData") + " " + textAfter;
+          let posTextAfter = textAfter.indexOf(' ');
+          let removedAfterString = textAfter.substring(posTextAfter);
+          var newText = textBefore + event.getAttribute("data-valData") + removedAfterString;
           idInput.value = newText;
-          console.log({ textBefore, textBetween, textAfter });
         }
         dropdownList.style.display = "none";
       }
