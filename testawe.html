@@ -41,16 +41,10 @@
             positionCursor = cursorPosition;
             makeListInput();
           } else {
-            idInput.addEventListener(
-              "keypress",
-              function (event) {
-                if (event.key === "#") {
-                  positionCursor = cursorPosition;
-                  makeListInput();
-                }
-              },
-              false
-            );
+            if (valuesData === "#") {
+                positionCursor = cursorPosition;
+                makeListInput();
+            }
           }
         }
       }
