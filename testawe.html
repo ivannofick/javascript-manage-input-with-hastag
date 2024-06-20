@@ -1,82 +1,79 @@
-<html>
-  <head>
-    Halo
-  </head>
-  <body>
-    <div style="height: 12rem; width: 39rem">
-      <input
-        id="changed"
-        onkeydown="changedString(this)"
-        style="height: 12rem; width: 39rem"
-      />
-      <ul
-        style="
-          height: 12rem;
-          width: 39rem;
-          margin: 0px;
-          padding: 0;
-          display: none;
-        "
-        id="dropdown-list"
-      ></ul>
-    </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dropdown Trigger</title>
+  <style>
+    #changed {
+      height: 12rem;
+      width: 39rem;
+    }
+    #dropdown-list {
+      list-style-type: none;
+      padding: 0;
+      display: none;
+    }
+    #dropdown-list li {
+      cursor: pointer;
+      padding: 5px;
+      background-color: #f2f2f2;
+      border: 1px solid #ccc;
+    }
+    #dropdown-list li:hover {
+      background-color: #e5e5e5;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <input
+      id="changed"
+      oninput="changedString(this)"
+    />
+    <ul id="dropdown-list"></ul>
+  </div>
 
-    <script>
-      var dropdownList = document.getElementById("dropdown-list");
-      var idInput = document.getElementById("changed");
-      var positionCursor = 0;
+  <script>
+    var dropdownList = document.getElementById("dropdown-list");
+    var idInput = document.getElementById("changed");
+    var positionCursor = 0;
 
-      /**
-       * cursor position https://stackoverflow.com/questions/54381318/get-index-of-marked-text-in-edittext-android-studio-kotlin
-       * get char https://stackoverflow.com/questions/50297288/how-can-i-access-a-char-in-string-in-at-specific-number
-       *
-       *
-       * */
-      function changedString(event) {
-        var valuesData = event.value;
-        if (valuesData !== "") {
-          var cursorPosition = idInput.selectionStart;
-          var inputValue = idInput.value;
-          if (inputValue.charAt(cursorPosition - 1) === "#") {
-            positionCursor = cursorPosition;
-            makeListInput();
-          } else {
-            if (valuesData === "#") {
-                positionCursor = cursorPosition;
-                makeListInput();
-            }
-          }
-        }
-      }
-      function makeListInput() {
-        dropdownList.style.display = "block";
-        var arrayList = ["trondol", "balap", "liar", "motor"];
-        dropdownList.innerHTML = "";
-        arrayList.forEach((valArr, index) => {
-          dropdownList.innerHTML += `<li onclick='selectedList(this)' data-valData='${valArr}'>${valArr}</li>`;
-        });
-      }
-      function selectedList(event) {
-        var inputValue = idInput.value+" ";
-        if (inputValue.endsWith("#")) {
-          var textBefore = inputValue.substring(0, positionCursor + 1);
-          var newText = textBefore + event.getAttribute("data-valData") + " ";
-          idInput.value = newText.replace(/\s+$/, '')+" ";
-        } else {
-          var textBefore = inputValue.substring(0, positionCursor);
-          var textBetween = inputValue.substring(0, positionCursor + 1);
-          var textAfter = inputValue.substring(positionCursor);
-          let posTextAfter = textAfter.indexOf(" ");
-          let removedAfterString = textAfter.substring(posTextAfter);
-          var newText = textBefore + event.getAttribute("data-valData") + removedAfterString;
-          if (textBetween.charAt(positionCursor - 1) !== "#") {
-            newText =  textBetween+ event.getAttribute("data-valData") + removedAfterString;
-          }
-          idInput.value = newText.replace(/\s+$/, '')+" ";
-        }
+    function changedString(event) {
+      var inputValue = event.value;
+      var cursorPosition = idInput.selectionStart;
+
+      // Check if '#' followed by exactly three characters
+      if (cursorPosition >= 4 && inputValue[cursorPosition - 4] === '#' && inputValue.substring(cursorPosition - 3, cursorPosition).match(/[a-zA-Z]{3}/)) {
+        positionCursor = cursorPosition - 3; // Adjust cursor position to start after '#'
+        makeListInput();
+      } else {
         dropdownList.style.display = "none";
-        idInput.focus()
       }
-    </script>
-  </body>
+    }
+
+    function makeListInput() {
+      dropdownList.innerHTML = "";
+      var arrayList = ["trondol", "balap", "liar", "motor"];
+      arrayList.forEach(function(valArr) {
+        var li = document.createElement("li");
+        li.textContent = valArr;
+        li.onclick = function() {
+          insertText(valArr);
+        };
+        dropdownList.appendChild(li);
+      });
+      dropdownList.style.display = "block";
+    }
+
+    function insertText(selectedText) {
+      var inputValue = idInput.value;
+      var textBefore = inputValue.substring(0, positionCursor);
+      var textAfter = inputValue.substring(positionCursor + 3);
+      idInput.value = textBefore + selectedText + textAfter;
+      dropdownList.style.display = "none";
+      idInput.focus();
+    }
+  </script>
+</body>
 </html>
