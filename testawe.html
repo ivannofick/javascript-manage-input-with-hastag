@@ -45,16 +45,17 @@
 
       // Check if '#' followed by exactly three characters
       if (cursorPosition >= 4 && inputValue[cursorPosition - 4] === '#' && inputValue.substring(cursorPosition - 3, cursorPosition).match(/[a-zA-Z]{3}/)) {
+        console.log(inputValue.substring(cursorPosition - 3, cursorPosition))
         positionCursor = cursorPosition - 3; // Adjust cursor position to start after '#'
-        makeListInput();
+        makeListInput(inputValue.substring(cursorPosition - 3, cursorPosition));
       } else {
         dropdownList.style.display = "none";
       }
     }
 
-    function makeListInput() {
+    function makeListInput(param) {
       dropdownList.innerHTML = "";
-      var arrayList = ["trondol", "balap", "liar", "motor"];
+      var arrayList = ["trondol", "balap", "liar", "motor", param];
       arrayList.forEach(function(valArr) {
         var li = document.createElement("li");
         li.textContent = valArr;
