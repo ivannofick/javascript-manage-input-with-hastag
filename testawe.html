@@ -38,16 +38,20 @@
     var dropdownList = document.getElementById("dropdown-list");
     var idInput = document.getElementById("changed");
     var positionCursor = 0;
+    var cursorPositionMin = 3;
+
 
     function changedString(event) {
       var inputValue = event.value;
       var cursorPosition = idInput.selectionStart;
 
+      var regexString = '[a-zA-Z]{' + Number(cursorPositionMin) + '}';
+      console.log(inputValue[cursorPosition - (Number(cursorPositionMin) + 1)])
       // Check if '#' followed by exactly three characters
-      if (cursorPosition >= 4 && inputValue[cursorPosition - 4] === '#' && inputValue.substring(cursorPosition - 3, cursorPosition).match(/[a-zA-Z]{3}/)) {
-        console.log(inputValue.substring(cursorPosition - 3, cursorPosition))
-        positionCursor = cursorPosition - 3; // Adjust cursor position to start after '#'
-        makeListInput(inputValue.substring(cursorPosition - 3, cursorPosition));
+      if (cursorPosition >= 4 && inputValue[cursorPosition - (Number(cursorPositionMin) + 1)] === '#' && inputValue.substring(cursorPosition - cursorPositionMin, cursorPosition).match(regexString)) {
+        positionCursor = cursorPosition - cursorPositionMin; // Adjust cursor position to start after '#'
+        makeListInput(inputValue.substring(cursorPosition - cursorPositionMin, cursorPosition));
+        cursorPositionMin += 1;
       } else {
         dropdownList.style.display = "none";
       }
@@ -70,10 +74,11 @@
     function insertText(selectedText) {
       var inputValue = idInput.value;
       var textBefore = inputValue.substring(0, positionCursor);
-      var textAfter = inputValue.substring(positionCursor + 3);
-      idInput.value = textBefore + selectedText + textAfter;
+      var textAfter = inputValue.substring(positionCursor + cursorPositionMin);
+      idInput.value = textBefore + selectedText  + ' ' + textAfter;
       dropdownList.style.display = "none";
       idInput.focus();
+      cursorPositionMin = 3;
     }
   </script>
 </body>
